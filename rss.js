@@ -1,6 +1,14 @@
 const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 const rssUrl = "https://gamasutra.com/blogs/rss/";
 
+function unescapeHtml(text) {
+    return text.replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+}
+
 fetch(proxyUrl + rssUrl).then((res) => {
   res.text().then((xmlTxt) => {
     var domParser = new DOMParser();
@@ -19,11 +27,13 @@ fetch(proxyUrl + rssUrl).then((res) => {
       document.getElementById("list").appendChild(category);
       
       let a = document.createElement('a');
+      a.setAttribute("class", "link");
       a.setAttribute("href", item.querySelector('link').textContent);
-      a.textContent = titleText;
+      let link = unescapeHtml(titleText);
+      a.textContent = link;
       
       let p = document.createElement('p');
-      p.setAttribute("class", "linkLine");
+      p.setAttribute("class", "link-line");
       p.appendChild(a);
       p.insertAdjacentText("beforeend", byLine);
       

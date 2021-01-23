@@ -6,7 +6,12 @@ body {
   margin-bottom: 0;
 }
 
-.linkLine {
+.link-line {
   margin-top: 0;
   margin-bottom: 1.5em;
+  font-style: italic;
+}
+
+.link {
+  font-style: normal;
 }
