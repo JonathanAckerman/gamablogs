@@ -22,6 +22,7 @@ fetch(proxyUrl + rssUrl).then((res) => {
       var itemCategories = item.querySelector('category').textContent;
       
       let category = document.createElement('p');
+      itemCategories = itemCategories.replace(/,/g, ", ");
       category.textContent = itemCategories;
       category.setAttribute("class", "category");
       document.getElementById("list").appendChild(category);
