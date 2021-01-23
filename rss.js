@@ -5,10 +5,8 @@ fetch(proxyUrl + rssUrl).then((res) => {
   res.text().then((xmlTxt) => {
     var domParser = new DOMParser();
     let doc = domParser.parseFromString(xmlTxt, 'text/xml');
-    doc.querySelectorAll('item').forEach((item) => {
-
-      console.log(item);
-      
+    doc.querySelectorAll('item').forEach((item) => 
+    {
       var fullText = item.querySelector('title').textContent;
       var byLineIndex = fullText.search(" - by ");
       var byLine = fullText.slice(byLineIndex);
@@ -17,6 +15,7 @@ fetch(proxyUrl + rssUrl).then((res) => {
       
       let category = document.createElement('p');
       category.textContent = itemCategories;
+      category.setAttribute("class", "category");
       document.getElementById("list").appendChild(category);
       
       let a = document.createElement('a');
@@ -24,6 +23,7 @@ fetch(proxyUrl + rssUrl).then((res) => {
       a.textContent = titleText;
       
       let p = document.createElement('p');
+      p.setAttribute("class", "linkLine");
       p.appendChild(a);
       p.insertAdjacentText("beforeend", byLine);
       
