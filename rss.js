@@ -9,6 +9,35 @@ function unescapeHtml(text) {
         .replace(/&#039;/g, "'");
 }
 
+var activeFilterList = new Set();
+
+function filter(elem) {
+  var value = elem.innerText;
+  if (!activeFilterList.has(value))
+  {
+    activeFilterList.add(value);
+    
+    var filterClass = elem.getAttribute("class");
+    filterClass = filterClass.split(" ")[1];
+    var filterList = document.querySelectorAll("p." + filterClass);
+    filterList.forEach((item) => {
+      item.style.color = "yellow";
+    });
+  }
+  else
+  {
+    activeFilterList.delete(value);
+    
+    var filterClass = elem.getAttribute("class");
+    filterClass = filterClass.split(" ")[1];
+    var filterList = document.querySelectorAll("p." + filterClass);
+    filterList.forEach((item) => {
+      item.style.color = "";
+    });
+  }
+  
+}
+
 fetch(proxyUrl + rssUrl).then((res) => {
   res.text().then((xmlTxt) => {
     var domParser = new DOMParser();
@@ -21,10 +50,12 @@ fetch(proxyUrl + rssUrl).then((res) => {
       var titleText = fullText.substr(0, byLineIndex);
       var itemCategories = item.querySelector('category').textContent;
       
-      let categoryList = itemCategories.split(',');
-      categoryList.forEach((cat) => 
+      let categoryListText = itemCategories.split(',');
+      var catList = document.createElement('div');
+      catList.setAttribute("class", "cat-list");
+      categoryListText.forEach((cat) => 
       {
-        var category = document.createElement('div');
+        var category = document.createElement('p');
         category.textContent = cat;
         let className = "category";
         category.setAttribute("class", className);
@@ -53,8 +84,12 @@ fetch(proxyUrl + rssUrl).then((res) => {
             cat == "Smartphone/Tablet") {
           category.setAttribute("class", className + " Cat-Plat");
         }
-        document.getElementById("list").appendChild(category);
+        if (cat == "Serious") {
+          category.setAttribute("class", className + " Cat-Serious");
+        }
+        catList.appendChild(category);
       });
+      document.getElementById("list").appendChild(catList);
       
       let a = document.createElement('a');
       a.setAttribute("class", "link");
@@ -64,6 +99,7 @@ fetch(proxyUrl + rssUrl).then((res) => {
       
       let p = document.createElement('p');
       p.setAttribute("class", "link-line");
+      p.setAttribute("style", "clear:both");
       p.appendChild(a);
       p.insertAdjacentText("beforeend", byLine);
       
