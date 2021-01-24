@@ -49,6 +49,10 @@ fetch(proxyUrl + rssUrl).then((res) => {
         if (cat == "Audio") {
           category.setAttribute("class", className + " Cat-Audio");
         }
+        if (cat == "Console/PC" || cat == "VR" || cat == "Social/Online" ||
+            cat == "Smartphone/Tablet") {
+          category.setAttribute("class", className + " Cat-Plat");
+        }
         document.getElementById("list").appendChild(category);
       });
       

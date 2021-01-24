@@ -40,8 +40,8 @@ body {
   background-color: yellow;
 }
 .Cat-Prog {
-  color: white;
-  background-color: pink;
+  color: black;
+  background-color: aliceblue;
 }
 .Cat-Art {
   color: white;
@@ -50,4 +50,8 @@ body {
 .Cat-Audio {
   color: white;
   background-color: orange;
+}
+.Cat-Plat{
+  color: black;
+  background-color: lightgrey;
 }
