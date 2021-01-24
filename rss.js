@@ -21,11 +21,36 @@ fetch(proxyUrl + rssUrl).then((res) => {
       var titleText = fullText.substr(0, byLineIndex);
       var itemCategories = item.querySelector('category').textContent;
       
-      let category = document.createElement('p');
-      itemCategories = itemCategories.replace(/,/g, ", ");
-      category.textContent = itemCategories;
-      category.setAttribute("class", "category");
-      document.getElementById("list").appendChild(category);
+      let categoryList = itemCategories.split(',');
+      categoryList.forEach((cat) => 
+      {
+        var category = document.createElement('div');
+        category.textContent = cat;
+        let className = "category";
+        category.setAttribute("class", className);
+        if (cat == "Design") {
+          category.setAttribute("class", className + " Cat-Des");
+        }
+        if (cat == "Business/Marketing") {
+          category.setAttribute("class", className + " Cat-Biz");
+        }
+        if (cat == "Production") {
+          category.setAttribute("class", className + " Cat-Prod");
+        }
+        if (cat == "Indie") {
+          category.setAttribute("class", className + " Cat-Indie");
+        }
+        if (cat == "Programming") {
+          category.setAttribute("class", className + " Cat-Prog");
+        }
+        if (cat == "Art") {
+          category.setAttribute("class", className + " Cat-Art");
+        }
+        if (cat == "Audio") {
+          category.setAttribute("class", className + " Cat-Audio");
+        }
+        document.getElementById("list").appendChild(category);
+      });
       
       let a = document.createElement('a');
       a.setAttribute("class", "link");
