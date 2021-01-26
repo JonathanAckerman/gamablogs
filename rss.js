@@ -11,6 +11,9 @@ function unescapeHtml(text) {
 
 var activeFilterList = new Set();
 
+var activeElemList = [];
+var inactiveElemList = [];
+
 function filter(elem) {
   var value = elem.innerText;
   if (!activeFilterList.has(value))
@@ -35,7 +38,22 @@ function filter(elem) {
       item.style.color = "";
     });
   }
-  
+  colorTags(activeFilterList);
+}
+
+function colorTags(filters) {
+  activeElemList.forEach((elem) => {
+    let catList = elem.children[0];
+    for (let c of catList.children) 
+    {
+      let str = c.getAttribute("class").split(" ")[1];
+      if (!filters.has(str))
+      {
+        console.log(c);
+        c.style.backgroundColor = "";
+      }
+    }
+  });
 }
 
 fetch(proxyUrl + rssUrl).then((res) => {
@@ -49,6 +67,9 @@ fetch(proxyUrl + rssUrl).then((res) => {
       var byLine = fullText.slice(byLineIndex);
       var titleText = fullText.substr(0, byLineIndex);
       var itemCategories = item.querySelector('category').textContent;
+      
+      var elemContainer = document.createElement('div');
+      elemContainer.setAttribute("class", "elem-container");
       
       let categoryListText = itemCategories.split(',');
       var catList = document.createElement('div');
@@ -89,7 +110,7 @@ fetch(proxyUrl + rssUrl).then((res) => {
         }
         catList.appendChild(category);
       });
-      document.getElementById("list").appendChild(catList);
+      elemContainer.appendChild(catList);
       
       let a = document.createElement('a');
       a.setAttribute("class", "link");
@@ -102,13 +123,12 @@ fetch(proxyUrl + rssUrl).then((res) => {
       p.setAttribute("style", "clear:both");
       p.appendChild(a);
       p.insertAdjacentText("beforeend", byLine);
+      elemContainer.appendChild(p);
       
-      document.getElementById("list").appendChild(p);
+      document.getElementById("list").appendChild(elemContainer);
+      var clone = elemContainer.cloneNode(true);
+      activeElemList.push(clone);
     })
   })
 });
-
-  // .then(response => response.text())
-  // .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
-  // .then(data => console.log(data))
   
