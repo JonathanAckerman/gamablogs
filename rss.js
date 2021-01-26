@@ -2,11 +2,23 @@ const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 const rssUrl = "https://gamasutra.com/blogs/rss/";
 
 function unescapeHtml(text) {
-    return text.replace(/&amp;/g, '&')
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#039;/g, "'");
+  console.log(text);
+  var input = text.replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/Â/g, '');
+    
+  var output = "";
+  for (let c in input) {
+    let u = input[c].charCodeAt(0);
+    if (u < 127)
+    {
+      output += String.fromCharCode(u);
+    }
+  };
+  return output;
 }
 
 var activeFilterList = new Set();
